@@ -1,0 +1,21 @@
+---
+
+oomox__user: alex
+
+oomox__output_theme: oomox
+oomox__output_mode: gtk320
+oomox__colorscheme: base16-default-actuallydark
+# oomox_user.home is populated from user module
+oomox__colorscheme_path: "{{ oomox_user.home }}/.config/oomox/colors/{{ oomox__colorscheme }}"
+
+oomox__gtk_binary: oomox-cli
+oomox__gtk_args: "-o {{ oomox__output_theme }} -m {{ oomox__output_mode }} {{ oomox__colorscheme_path }}"
+oomox__gtk_cmd: "{{ oomox__gtk_binary }} {{oomox__gtk_args }}"
+
+oomox__icon_pkg: themix-icons-suru-plus-git
+oomox__icon_binary_name: change_color.sh
+# This is found from the package listing
+# pacman -Ql {{ oomox__icon_pkg }} | grep 'change_color.sh' | awk '{print $2}'
+#oomox__icon_binary: null
+oomox__icon_args: "-o {{ oomox__output_theme }} {{ oomox__colorscheme_path }}"
+oomox__icon_cmd: "{{ oomox__icon_binary }} {{ oomox__icon_args }}"

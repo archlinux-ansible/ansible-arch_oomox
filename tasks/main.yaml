@@ -1,0 +1,30 @@
+---
+
+- name: Get facts about oomox user
+  user:
+    name: "{{ oomox__user }}"
+    state: present
+  changed_when: no
+  register: oomox_user
+
+- name: Generate oomox GTK theme
+  command: "{{ oomox__gtk_cmd }}"
+  changed_when: no
+  become: yes
+  become_user: "{{ oomox__user }}"
+
+# Get all files owned by icon package
+# Use our custom filter to find the script
+- name: Get all files provided by icon pkg
+  command: "pacman -Ql {{ oomox__icon_pkg }}"
+  register: oomox_icon_files
+  changed_when: no
+- name: Find oomox icon theme script
+  set_fact:
+    oomox__icon_binary: "{{ oomox_icon_files.stdout_lines | find_binary(oomox__icon_binary_name) }}"
+
+- name: Generate oomox icon theme
+  command: "{{ oomox__icon_cmd }}"
+  changed_when: no
+  become: yes
+  become_user: "{{ oomox__user }}"
